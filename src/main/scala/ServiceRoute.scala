@@ -12,7 +12,9 @@ trait ServiceRoute {
           event => complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, s"<h1>Get ${event}</h1>"))
         }
       }~post{
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, s"<h1>Post</h1>"))
+        entity(as[String]){ eventMsg =>
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, s"Post \n${eventMsg}"))
+        }
       }
     }
   }
