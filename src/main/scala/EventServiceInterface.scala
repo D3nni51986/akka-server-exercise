@@ -1,23 +1,39 @@
+import akka.http.javadsl.server.RouteResult
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import akka.http.scaladsl.server.{Directive1, Rejection}
+import akka.http.scaladsl.server.{Directive1, Rejection, RequestContext, Route}
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.Materializer
 
-trait EventServiceInterface extends ServiceInterface with SprayJsonSupport{
+import scala.concurrent.{ExecutionContext, Future, Promise}
+
+trait EventServiceRoute extends ServiceInterface with SprayJsonSupport{
+
+  implicit def materializer: Materializer
+  implicit val executionContext:ExecutionContext
+
+  import MyJsonProtocol._
+  import spray.json._
 
   val route = {
     pathPrefix("service" /){
       get{
         extractEventType{
-          event => complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, s"<h1>Get ${event}</h1>"))
+          eventType => complete(eventType)
         }
       }~post{
-        entity(as[String]){ eventMsg =>
-          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, s"Post \n${eventMsg}"))
+        entity(as[Event]) {
+          event => complete(postEvent(event))
         }
       }
     }
+  }
+
+  private def postEvent(event:Event):Future[String] = {
+    val promise = Promise[Event]()
+    service ! promise.success(event)
+    promise.future.map(_.event_type)
   }
 
   private def extractEventType:Directive1[String] = {
@@ -34,8 +50,4 @@ trait EventServiceInterface extends ServiceInterface with SprayJsonSupport{
       s"Error ${error}"
     }
   }
-
-
-  protected implicit def materializer: Materializer
-
 }

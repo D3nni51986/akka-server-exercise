@@ -1,1 +1,1 @@
-case class Event(eventType:String, data:String, timeStamp:Long)
+case class Event(event_type:String, data:String, timestamp:Long)

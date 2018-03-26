@@ -6,20 +6,20 @@ import akka.pattern.pipe
 
 object Manager extends App{
 
-  def serviceActor:Props = Props(new Manager())
+  def managerActor:Props = Props(new Manager())
 
   val system = ActorSystem("Manager", ConfigFactory.load())
-  system.actorOf(serviceActor, "Manager")
+  system.actorOf(managerActor, "Manager")
 }
 
 class Manager
   extends Actor
-    with EventServiceInterface{
+    with EventServiceRoute{
 
   implicit val materializer     = ActorMaterializer()
   implicit val executionContext = context.dispatcher
 
-  val service = new EventsStorageService()
+  val service = context.actorOf(Props(new EventsStorageService()))
 
   override def receive = {
     case msg:String     => println(s"$msg")
