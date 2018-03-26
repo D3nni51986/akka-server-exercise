@@ -1,9 +1,10 @@
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.http.scaladsl.server.{Directive1, Rejection}
 import akka.http.scaladsl.server.Directives._
 import akka.stream.Materializer
 
-trait ServiceRoute {
+trait EventServiceInterface extends ServiceInterface with SprayJsonSupport{
 
   val route = {
     pathPrefix("service" /){
