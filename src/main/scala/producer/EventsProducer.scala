@@ -1,6 +1,7 @@
 package producer
 
-import akka.actor.{Actor, Props}
+import akka.event.Logging
+import akka.actor.{Actor, ActorLogging, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.Connection
@@ -28,7 +29,8 @@ object EventsProducer extends EventServiceApp{
 class EventsProducer
   extends Actor
     with ServiceJsonSupport
-    with EventAppConfig{
+    with EventAppConfig
+    with ActorLogging{
 
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = context.dispatcher
@@ -39,7 +41,7 @@ class EventsProducer
         fireHttpRequest(input)
       }
     })
-    case _ => println(s"Received UNKNOWN data")
+    case _ => log.warning(s"Received UNKNOWN data")
   }
 
   private def fireHttpRequest(reqJson: String) = {
@@ -52,8 +54,8 @@ class EventsProducer
 
     val http = Http(EventsProducer.system)
     http.singleRequest(httpRequest).onComplete {
-      case Success(s) => println(s"Sent successfully ${s}")
-      case Failure(e) => println(s"Error in sending ${e}")
+      case Success(s) => log.info(s"Sent successfully ${s}")
+      case Failure(e) => log.error(s"Error in sending ${e}")
     }
   }
 }

@@ -1,6 +1,7 @@
 package consumer
 
-import akka.actor.{Actor, ActorSystem, Props}
+import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
+import akka.event.Logging
 import akka.http.scaladsl.Http
 import akka.pattern.pipe
 import akka.stream.ActorMaterializer
@@ -15,15 +16,16 @@ object EventsConsumer extends EventServiceApp{
 class EventsConsumer
   extends Actor
     with EventServiceRoute
-    with EventAppConfig{
+    with EventAppConfig
+    with ActorLogging{
 
   implicit val materializer     = ActorMaterializer()
   implicit val executionContext = context.dispatcher
 
   override def receive = {
-    case s:String  => println(s"Handling requests => ${s}")
+    case s:String  => log.info(s"Handling requests => ${s}")
   }
 
-  Http(context.system).bindAndHandle(route, server_host, server_port).pipeTo(context.self)
+  Http(context.system).bindAndHandle(route, server_host, server_port)
 
 }
