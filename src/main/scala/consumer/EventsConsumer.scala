@@ -24,6 +24,6 @@ class EventsConsumer
     case s:String  => println(s"Handling requests => ${s}")
   }
 
-  Http(context.system).bindAndHandle(route, server_host.get, server_port.get).pipeTo(context.self)
+  Http(context.system).bindAndHandle(route, server_host, server_port).pipeTo(context.self)
 
 }
