@@ -1,3 +1,5 @@
+package route
+
 import akka.http.scaladsl.marshalling.{ToResponseMarshallable, ToResponseMarshaller}
 import akka.http.scaladsl.server.{Directives, Route}
 
@@ -13,5 +15,9 @@ trait RouteHelper extends Directives{
       case None => complete(None)
     }
 
-  //def complete(resource: Future[Unit]): Route = onSuccess(resource) { complete(Future(Some(204))) }
+  def complete(resource: Future[Option[Int]]): Route =
+    onSuccess(resource) {
+      case Some(t) => complete(ToResponseMarshallable(t.toString))
+      case None => complete(Future("404-NOT FOUND"))
+    }
 }
