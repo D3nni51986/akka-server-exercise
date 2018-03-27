@@ -1,4 +1,4 @@
-package storage
+package consumer.storage
 
 import models.Event
 

@@ -1,4 +1,4 @@
-package route
+package consumer.route
 
 import akka.http.scaladsl.marshalling.{ToResponseMarshallable, ToResponseMarshaller}
 import akka.http.scaladsl.server.{Directives, Route}

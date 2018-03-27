@@ -4,18 +4,15 @@ import akka.actor.{Actor, ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.pattern.pipe
 import akka.stream.ActorMaterializer
-import com.typesafe.config.ConfigFactory
 import route.EventServiceRoute
+import support.EventServiceApp
 
-object EventsConsumerManager extends App{
-
-  def managerActor:Props = Props(new EventsConsumerManager())
-
-  val system = ActorSystem("EventsConsumerManager", ConfigFactory.load())
-  system.actorOf(managerActor, "EventsConsumerManager")
+object EventsConsumer extends EventServiceApp{
+  def workerName = "EventsConsumer"
+  def worker = Props(new EventsConsumer())
 }
 
-class EventsConsumerManager extends Actor with EventServiceRoute{
+class EventsConsumer extends Actor with EventServiceRoute{
 
   implicit val materializer     = ActorMaterializer()
   implicit val executionContext = context.dispatcher

@@ -1,4 +1,4 @@
-package storage
+package consumer.storage
 
 import java.util.concurrent.ConcurrentHashMap
 import akka.actor.{Actor, Props}
@@ -7,7 +7,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{Future, Promise}
 import scala.util.Success
 import models.Event
-import consumer.EventsConsumerManager._
+import consumer.EventsConsumer._
 
 object EventsStorageService extends StorageService{
 

@@ -1,8 +1,8 @@
-package route
+package consumer.route
 
 import akka.http.scaladsl.server.{Directive1, Rejection}
 import models.Event
-import storage.EventsStorageService
+import consumer.storage.EventsStorageService
 import support.ServiceJsonSupport
 
 import scala.concurrent.Future
