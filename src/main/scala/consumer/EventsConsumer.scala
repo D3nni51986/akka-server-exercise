@@ -5,14 +5,17 @@ import akka.http.scaladsl.Http
 import akka.pattern.pipe
 import akka.stream.ActorMaterializer
 import route.EventServiceRoute
-import support.EventServiceApp
+import support.{EventAppConfig, EventServiceApp}
 
 object EventsConsumer extends EventServiceApp{
   def workerName = "EventsConsumer"
   def worker = Props(new EventsConsumer())
 }
 
-class EventsConsumer extends Actor with EventServiceRoute{
+class EventsConsumer
+  extends Actor
+    with EventServiceRoute
+    with EventAppConfig{
 
   implicit val materializer     = ActorMaterializer()
   implicit val executionContext = context.dispatcher
@@ -21,6 +24,6 @@ class EventsConsumer extends Actor with EventServiceRoute{
     case s:String  => println(s"Handling requests => ${s}")
   }
 
-  Http(context.system).bindAndHandle(route, "localhost", 8050).pipeTo(context.self)
+  Http(context.system).bindAndHandle(route, server_host.get, server_port.get).pipeTo(context.self)
 
 }

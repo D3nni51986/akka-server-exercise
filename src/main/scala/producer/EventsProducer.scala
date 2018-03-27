@@ -19,7 +19,7 @@ object EventsProducer extends EventServiceApp{
   val worker:Props = Props(new EventsProducer())
 
   def produce() = {
-    "generator-windows-amd64.exe".lineStream.foreach(i => workerActor ! i)
+    jsonGenerator.lineStream.foreach(i => workerActor ! i)
   }
 
   produce()
@@ -43,7 +43,7 @@ object EventsProducer extends EventServiceApp{
   private def fireHttpRequest(reqJson:String) = {
     val httpRequest = HttpRequest(
       HttpMethods.POST,
-      uri = Uri("http://localhost:8050/service/"),
+      uri = Uri(s"http://${server_host}:${server_port}/service/"),
       entity = HttpEntity.apply(ContentType(MediaTypes.`application/json`), reqJson),
       headers = List(Connection("keep-alive"))
     )
