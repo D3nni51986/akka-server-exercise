@@ -1,6 +1,5 @@
 package producer
 
-import akka.event.Logging
 import akka.actor.{Actor, ActorLogging, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._

@@ -1,9 +1,7 @@
 package consumer
 
-import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
-import akka.event.Logging
+import akka.actor.{Actor, ActorLogging, Props}
 import akka.http.scaladsl.Http
-import akka.pattern.pipe
 import akka.stream.ActorMaterializer
 import route.EventServiceRoute
 import support.{EventAppConfig, EventServiceApp}
