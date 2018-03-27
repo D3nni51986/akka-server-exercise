@@ -40,7 +40,7 @@ trait EventServiceRoute extends RouteInterface with ServiceJsonSupport{
   }
 
   private def extractCountByEventType:Directive1[String] = {
-    parameter('numOf.?).flatMap{
+    parameter('numOfEvents.?).flatMap{
       case Some(eventType) => provide(eventType)
       case _          => {
         extractUri.flatMap(uri => reject(new ServiceRejection(s"${uri}")))
@@ -49,7 +49,7 @@ trait EventServiceRoute extends RouteInterface with ServiceJsonSupport{
   }
 
   private def extractCountDataByEventType:Directive1[String] = {
-    parameter('dataNumberOf.?).flatMap{
+    parameter('numOfDataPerEvent.?).flatMap{
       case Some(eventType) => provide(eventType)
       case _          => {
         extractUri.flatMap(uri => reject(new ServiceRejection(s"${uri}")))
