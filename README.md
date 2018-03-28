@@ -9,7 +9,7 @@ Path can be configured at application.conf config/application.conf
         By default the service is running on localhost and listening to port 8085
 </br>2)In order to run the producer please run : EventsProducer file
 ## Tests
-</br>You can post and event data by sending http request to : http://localhost:8085/service/
+</br>You can post a event data by sending http request to : http://localhost:8085/service/
 </br>example :
 </br>{
 </br>   "event_type":"bar",
